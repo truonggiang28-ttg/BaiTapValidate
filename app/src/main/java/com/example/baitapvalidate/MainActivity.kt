@@ -29,20 +29,46 @@ class MainActivity : AppCompatActivity() {
             val className = edtClass.text.toString().trim()
 
             // Bắt đầu Validation
-            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || msv.isEmpty() || className.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            var isValid = true
+
+            // Kiểm tra Họ tên
+            if (name.isEmpty()) {
+                edtName.error = "Không được để trống họ tên!"
+                isValid = false
             }
 
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            // Kiểm tra Email
+            if (email.isEmpty()) {
+                edtEmail.error = "Không được để trống email!"
+                isValid = false
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 edtEmail.error = "Email không hợp lệ!"
-                edtEmail.requestFocus()
-                return@setOnClickListener
+                isValid = false
             }
 
-            if (phone.length < 10 || !phone.matches(Regex("^[0-9]+$"))) {
+            // Kiểm tra Số điện thoại
+            if (phone.isEmpty()) {
+                edtPhone.error = "Không được để trống số điện thoại!"
+                isValid = false
+            } else if (phone.length < 10 || !phone.matches(Regex("^[0-9]+$"))) {
                 edtPhone.error = "Số điện thoại phải từ 10 số hợp lệ!"
-                edtPhone.requestFocus()
+                isValid = false
+            }
+
+            // Kiểm tra Mã sinh viên
+            if (msv.isEmpty()) {
+                edtMsv.error = "Không được để trống mã sinh viên!"
+                isValid = false
+            }
+
+            // Kiểm tra Lớp
+            if (className.isEmpty()) {
+                edtClass.error = "Không được để trống lớp!"
+                isValid = false
+            }
+
+            // Nếu có bất kỳ ô nào bị lỗi thì dừng lại, không chuyển trang
+            if (!isValid) {
                 return@setOnClickListener
             }
 
