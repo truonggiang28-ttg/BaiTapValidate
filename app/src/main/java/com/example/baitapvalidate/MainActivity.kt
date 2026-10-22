@@ -28,7 +28,23 @@ class MainActivity : AppCompatActivity() {
             val msv = edtMsv.text.toString().trim()
             val className = edtClass.text.toString().trim()
 
+            // Bắt đầu Validation
+            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || msv.isEmpty() || className.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                edtEmail.error = "Email không hợp lệ!"
+                edtEmail.requestFocus()
+                return@setOnClickListener
+            }
+
+            if (phone.length < 10 || !phone.matches(Regex("^[0-9]+$"))) {
+                edtPhone.error = "Số điện thoại phải từ 10 số hợp lệ!"
+                edtPhone.requestFocus()
+                return@setOnClickListener
+            }
 
             // Nếu Pass hết Validation -> Gọi Intent
             val intent = Intent(this, DetailsActivity::class.java).apply {
